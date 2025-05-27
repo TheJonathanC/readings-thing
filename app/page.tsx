@@ -77,6 +77,9 @@ export default async function Home() {
             ) : (
               <p className="text-gray-600">No readings available for today.</p>
             )}
+            <p className="text-sm text-gray-500 mt-4">
+              Sourced from <a href="https://bible.usccb.org/daily-bible-reading" className="text-blue-500 hover:underline">USCCB daily bible readings</a>
+            </p>
           </div>
 
           {/* Rosary Mysteries Section */}
