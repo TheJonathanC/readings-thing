@@ -34,10 +34,16 @@ function getRosaryMysteries(date: Date): { type: string; mysteries: string[] } {
 
 // Main Server Component
 export default async function Home() {
-  // Fetch readings from API route
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/readings`, {
-    cache: 'no-store', // Ensure fresh data on each request
+ // Dynamically construct the fetch URL using the environment variable
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const res = await fetch(`${baseUrl}/api/readings`, {
+    cache: 'no-store',
   });
+
+  // Handle fetch errors gracefully
+  if (!res.ok) {
+    throw new Error(`Failed to fetch readings: ${res.status} ${res.statusText}`);
+  }
   const data = await res.json();
   const readings: Reading[] = data.readings || [];
 
@@ -63,8 +69,8 @@ export default async function Home() {
               <ul className="space-y-4">
                 {readings.map((reading, index) => (
                   <li key={index}>
-                    <p className="text-lg font-medium text-gray-700">{reading.type}</p>
-                    <p className="text-gray-600">{reading.notation}</p>
+                    <p className="text-gray-600">{reading.type}</p>
+                    <p className="text-lg font-medium text-gray-700">{reading.notation}</p>
                   </li>
                 ))}
               </ul>
